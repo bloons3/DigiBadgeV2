@@ -99,13 +99,13 @@ void setup()
   tft.setTextWrap(false);
   tft.setTextSize(1);
   tft.setCursor(0, 0);
-  tft.print("DigiBadge V2 Initializing.");
+  tft.print(F("DigiBadge V2 Initializing."));
   //Don't turn the light on until screen has started.
   //This will prevent seeing any left over image artifacts.
   pinMode(TFT_DIM, OUTPUT);
   setLight(bright);
   tft.setCursor(0, 16);
-  tft.print("Checking SD Card...");
+  tft.print(F("Checking SD Card..."));
   pinMode(SD_CD, INPUT_PULLUP);
   tft.setCursor(0, 24);
   SDInit = startSD();
@@ -119,7 +119,7 @@ void setup()
   pinMode(S_SEL, INPUT_PULLUP);
   tft.setCursor(0, 40);
   delay(100);
-  tft.print("Stick initialized");
+  tft.print(F("Stick initialized"));
   delay(100);
   //Check battery voltage.
   vcc = readVcc();
@@ -135,27 +135,27 @@ void setup()
   //Dividing by 100 turns this into a single decimal, IE 2.9v
   int v2 = (vcc - (v1 * 1000)) / 100;
   tft.setCursor(0, 54);
-  tft.print("Battery: ");
+  tft.print(F("Battery: "));
   if (lowbat) {
     //If our battery is low, print the battery voltage in red.
     tft.setTextColor(ST7735_RED);
   }
   tft.print(v1);
-  tft.print(".");
+  tft.print(F("."));
   tft.print(v2);
   //Revert to normal text color
   tft.setTextColor(ST7735_WHITE);
-  tft.print("v");
+  tft.print(F("v"));
   //Print information.
   tft.setCursor(0, 62);
-  tft.print("For code & schematics");
+  tft.print(F("For code & schematics"));
   tft.setCursor(0, 70);
-  tft.print("visit www.matchfire.net");
+  tft.print(F("visit www.matchfire.net"));
   delay(100);
   tft.setCursor(0, 86);
-  tft.print("Created by Jason LeClare");
+  tft.print(F("Created by Jason LeClare"));
   tft.setCursor(0, 94);
-  tft.print("2016");
+  tft.print(F("2016"));
   delay(2500);
   //Initial badge or image draw
   //By default this will be the Yellow Badge
@@ -206,9 +206,9 @@ void loop() {
     tft.fillScreen(ST7735_BLACK);
     tft.setTextColor(ST7735_WHITE);
     tft.setCursor(0, 0);
-    tft.print("SD Card Removed");
+    tft.print(F("SD Card Removed"));
     tft.setCursor(0, 8);
-    tft.print("Returning to badge mode...");
+    tft.print(F("Returning to badge mode..."));
     delay(1000);
     mode = 0; //Set the mode
     drawBadge(badge);
@@ -224,13 +224,13 @@ void loop() {
     tft.fillScreen(ST7735_BLACK);
     tft.setTextColor(ST7735_WHITE);
     tft.setCursor(0, 0);
-    tft.print("New SD card found.");
+    tft.print(F("New SD card found."));
     tft.setCursor(0, 8);
-    tft.print("Checking SD Card...");
+    tft.print(F("Checking SD Card..."));
     tft.setCursor(0, 16);
     SDInit = startSD();
     tft.setCursor(0, 24);
-    tft.print("Returning to Badge mode...");
+    tft.print(F("Returning to Badge mode..."));
     //Wait so we can actually read it.
     delay(1000);
     drawBadge(badge);
@@ -265,9 +265,9 @@ void loop() {
       tft.fillScreen(ST7735_BLACK);
       tft.setCursor(0, 0);
       tft.setTextColor(ST7735_WHITE);
-      tft.print("No SD card found.");
+      tft.print(F("No SD card found."));
       tft.setCursor(0, 8);
-      tft.print("Returning to badge mode...");
+      tft.print(F("Returning to badge mode..."));
       delay(1000);
     }
     //Serial.println("Changing mode");
@@ -408,7 +408,7 @@ void drawBadge(int b) {
     tft.fillRect(53, 18, 54, 54, ST7735_BLACK);
     tft.fillRect(56, 21, 48, 48, ST7735_WHITE);
     tft.setCursor(54, 85);
-    tft.print("RED");
+    tft.print(F("RED"));
   }
   else if (b == 2) {
     //Green badge
@@ -416,7 +416,7 @@ void drawBadge(int b) {
     tft.fillCircle(80, 45, 27, ST7735_BLACK);
     tft.fillCircle(80, 45, 24, ST7735_WHITE);
     tft.setCursor(36, 85);
-    tft.print("GREEN");
+    tft.print(F("GREEN"));
   }
   else {
     //Yellow badge.
@@ -425,7 +425,7 @@ void drawBadge(int b) {
     tft.fillRect(22, 26, 116, 25, ST7735_BLACK);
     tft.fillRect(25, 29, 110, 19, ST7735_WHITE);
     tft.setCursor(28, 85);
-    tft.print("YELLOW");
+    tft.print(F("YELLOW"));
   }
   //Set colors back to default.
   tft.setTextSize(1);
@@ -441,17 +441,17 @@ bool startSD() {
   int SDCard = digitalRead(SD_CD);
   if (SDCard == 1) {
     //Serial.println("No SD card found.");
-    tft.print("No SD card found");
+    tft.print(F("No SD card found"));
     return false;
   }
   //Serial.println("SD Card found. Attempting load.");
   if (! SD.begin(SD_CS)) {
     //Serial.println("SD Card load failed.");
-    tft.print("SD Card load failed");
+    tft.print(F("SD Card load failed"));
     return false;
   }
   //Serial.println("SD Card loaded successfully.");
-  tft.print("SD Card loaded ");
+  tft.print(F("SD Card loaded "));
   //Set the file number to 0. This will allow re-initializing of SD cards without adding files.
   //This will overwrite any old filenames, and even if there are fewer files, nothing beyond fnum
   //will be loaded.
@@ -460,7 +460,7 @@ bool startSD() {
   listSDFiles();
   //Serial.print(fnum);
   tft.print(fnum);
-  tft.print(" files.");
+  tft.print(F(" files."));
   //Serial.println(" Files found.");
   return true;
 }
